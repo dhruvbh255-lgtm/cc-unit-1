@@ -1,0 +1,405 @@
+# Experiment 3.3.1: Number of Islands
+
+**Practical Experiment Module – Chandigarh University**
+
+**Unit 3 | Experiment 3**
+
+## Course Outcomes – Experiment Mapping
+
+| CO | CO Description | Bloom Level |
+|---|---|---|
+| CO4 | Evaluate the efficiency of different algorithms and select the most appropriate structure and technique to solve challenging problems requiring advanced data handling and optimization. | Understand |
+
+## 1. Aim
+
+Given an m × n 2D binary grid where '1' represents land and '0' represents water, find and return the total number of islands.
+
+An island is formed by connecting adjacent land cells horizontally or vertically. All four edges of the grid are surrounded by water.
+
+## 2. Problem Statement
+
+The Number of Islands problem is a graph traversal problem that can be solved using Depth First Search (DFS).
+
+The objective is to count the number of separate groups of connected land cells in a given 2D grid.
+
+**Example 1:**
+
+Input:
+```text
+grid = [
+["1","1","1","1","0"],
+["1","1","0","1","0"],
+["1","1","0","0","0"],
+["0","0","0","0","0"]
+]
+```
+
+Output:
+```text
+1
+```
+
+Explanation: All connected land cells form one single island.
+
+**Example 2:**
+
+Input:
+```text
+grid = [
+["1","1","0","0","0"],
+["1","1","0","0","0"],
+["0","0","1","0","0"],
+["0","0","0","1","1"]
+]
+```
+
+Output:
+```text
+3
+```
+
+Explanation: There are three separate groups of connected land cells.
+
+## 3. Software Required
+
+- Operating System: Windows 10/11 or Linux
+- Programming Languages: C++, Java, Python
+- IDE/Editor: VS Code / CodeBlocks / IntelliJ IDEA / PyCharm
+- Compiler: GCC / Java JDK / Python Interpreter
+
+## 4. Theory
+
+Depth First Search (DFS) is a graph traversal algorithm used to explore all connected vertices of a graph.
+
+In the Number of Islands problem, DFS is used to explore all connected land cells.
+
+Whenever a land cell ('1') is found:
+1. Increase the island count by one.
+2. Start DFS from that cell.
+3. Visit all horizontally and vertically connected land cells.
+4. Mark visited land cells as water ('0') to avoid counting them again.
+
+The process continues until every cell in the grid has been checked.
+
+## 5. Algorithm
+
+1. Start the program.
+2. Input the 2D binary grid.
+3. Check whether the grid is empty.
+4. Initialize the island count to zero.
+5. Traverse every cell of the grid.
+6. If the current cell contains '1':
+   - Increment the island count.
+   - Apply DFS to explore connected land cells.
+   - Mark all visited land cells as '0'.
+7. Continue until all cells are visited.
+8. Return the total island count.
+9. Stop.
+
+## 6. Pseudocode
+
+```text
+START
+
+INPUT 2D grid
+
+IF grid is empty
+    RETURN 0
+
+SET count = 0
+
+SET rows = number of rows
+SET cols = number of columns
+
+FOR each cell in grid
+
+    IF current cell is '1'
+
+        count = count + 1
+
+        CALL DFS(row, col)
+
+    END IF
+
+END FOR
+
+DFS(row, col)
+
+    IF row or col is outside grid boundaries
+        RETURN
+
+    IF current cell is '0'
+        RETURN
+
+    MARK current cell as '0'
+
+    DFS(row + 1, col)
+    DFS(row - 1, col)
+    DFS(row, col + 1)
+    DFS(row, col - 1)
+
+RETURN count
+
+STOP
+```
+
+## 7. C++ Implementation
+
+**File: C++/number_of_islands.cpp**
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+
+    void dfs(vector<vector<char>>& grid, int row, int col) {
+
+        int rows = grid.size();
+        int cols = grid[0].size();
+
+        if (row < 0 || col < 0 ||
+            row >= rows || col >= cols ||
+            grid[row][col] == '0')
+            return;
+
+        grid[row][col] = '0';
+
+        dfs(grid, row + 1, col);
+        dfs(grid, row - 1, col);
+        dfs(grid, row, col + 1);
+        dfs(grid, row, col - 1);
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+
+        if (grid.empty())
+            return 0;
+
+        int count = 0;
+
+        int rows = grid.size();
+        int cols = grid[0].size();
+
+        for (int i = 0; i < rows; i++) {
+
+            for (int j = 0; j < cols; j++) {
+
+                if (grid[i][j] == '1') {
+
+                    count++;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+
+        return count;
+    }
+};
+
+int main() {
+
+    vector<vector<char>> grid = {
+        {'1','1','0','0','0'},
+        {'1','1','0','0','0'},
+        {'0','0','1','0','0'},
+        {'0','0','0','1','1'}
+    };
+
+    Solution obj;
+
+    cout << "Number of Islands: "
+         << obj.numIslands(grid);
+
+    return 0;
+}
+```
+
+## 8. Java Implementation
+
+**File: Java/NumberOfIslands.java**
+
+```java
+class NumberOfIslands {
+
+    public void dfs(char[][] grid, int row, int col) {
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        if (row < 0 || col < 0 ||
+            row >= rows || col >= cols ||
+            grid[row][col] == '0')
+            return;
+
+        grid[row][col] = '0';
+
+        dfs(grid, row + 1, col);
+        dfs(grid, row - 1, col);
+        dfs(grid, row, col + 1);
+        dfs(grid, row, col - 1);
+    }
+
+    public int numIslands(char[][] grid) {
+
+        if (grid == null || grid.length == 0)
+            return 0;
+
+        int count = 0;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        for (int i = 0; i < rows; i++) {
+
+            for (int j = 0; j < cols; j++) {
+
+                if (grid[i][j] == '1') {
+
+                    count++;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+
+        char[][] grid = {
+            {'1','1','0','0','0'},
+            {'1','1','0','0','0'},
+            {'0','0','1','0','0'},
+            {'0','0','0','1','1'}
+        };
+
+        NumberOfIslands obj = new NumberOfIslands();
+
+        System.out.println("Number of Islands: "
+                + obj.numIslands(grid));
+    }
+}
+```
+
+## 9. Python Implementation
+
+**File: Python/number_of_islands.py**
+
+```python
+def num_islands(grid):
+
+    if not grid:
+        return 0
+
+    rows = len(grid)
+    cols = len(grid[0])
+
+    count = 0
+
+    def dfs(row, col):
+
+        if (row < 0 or col < 0 or
+            row >= rows or col >= cols or
+            grid[row][col] == "0"):
+            return
+
+        grid[row][col] = "0"
+
+        dfs(row + 1, col)
+        dfs(row - 1, col)
+        dfs(row, col + 1)
+        dfs(row, col - 1)
+
+    for i in range(rows):
+
+        for j in range(cols):
+
+            if grid[i][j] == "1":
+
+                count += 1
+                dfs(i, j)
+
+    return count
+
+
+grid = [
+    ["1","1","0","0","0"],
+    ["1","1","0","0","0"],
+    ["0","0","1","0","0"],
+    ["0","0","0","1","1"]
+]
+
+print("Number of Islands:", num_islands(grid))
+```
+
+## 10. Test Cases
+
+| Test Case | Input | Expected Output |
+|---|---|---|
+| 1 | First given grid | 1 |
+| 2 | Second given grid | 3 |
+| 3 | [["0","0"],["0","0"]] | 0 |
+| 4 | [["1"]] | 1 |
+| 5 | [["1","0","1"]] | 2 |
+
+## 11. Sample Output
+
+**Input:**
+```text
+[
+["1","1","0","0","0"],
+["1","1","0","0","0"],
+["0","0","1","0","0"],
+["0","0","0","1","1"]
+]
+```
+
+**Output:**
+```text
+Number of Islands: 3
+```
+
+## 12. Time and Space Complexity
+
+**Time Complexity: O(m × n)**
+
+Every cell is visited at most once during grid traversal and DFS.
+
+**Space Complexity: O(m × n)**
+
+In the worst case, the recursive DFS call stack can contain up to m × n cells.
+
+## 13. Learning Outcomes
+
+1. Understand the concept of grids and 2D matrix traversal.
+2. Learn how to use Depth First Search to explore connected components.
+3. Understand how islands are counted by marking visited land cells.
+4. Improve problem-solving skills in graph and matrix-based DSA problems.
+5. Understand implementation in C++, Java, and Python.
+
+## 14. Applications
+
+- Geographic map analysis.
+- Image processing.
+- Connected component detection.
+- Network connectivity analysis.
+- Land and water area identification.
+
+## 15. Conclusion
+
+The Number of Islands problem is successfully implemented using Depth First Search (DFS). The algorithm counts all separate groups of connected land cells in a 2D grid. It efficiently explores connected cells and marks visited land cells to avoid repeated counting.
+
+## 16. Reference Books
+
+1. Data Structures and Algorithms Made Easy – Narasimha Karumanchi.
+2. Data Structures Using C++ – D.S. Malik.
+3. The C++ Programming Language – Bjarne Stroustrup.
+4. Core Java – Cay S. Horstmann and Gary Cornell.
+
+## 17. References
+
+- [LeetCode – Number of Islands](https://leetcode.com/problems/number-of-islands/)
+- [GeeksforGeeks – Number of Islands](https://www.geeksforgeeks.org/dsa/find-the-number-of-islands-using-dfs/)
